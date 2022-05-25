@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="template">
+<link rel="stylesheet" type="text/css"
+href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Produits</title>
+</head>
+<body>
+<div layout:fragment="Mycontent">
+<div class="container mt-5">
+<div class="card">
+<div class="card-header">
+Liste des TvShows
+</div>
+<div class="card-body">
+<form class="search-box" name="searchFormGenre" th:action="@{searchGenre}" method="GET">
+              
+                    <div class="form-group"> 
+<label class="control-label">Chercher Par Genre :</label>
+ <select name="genre" class="form-control" th:if= "${!#strings.isEmpty(genres)}"  onchange="this.form.submit()" required>  
+  <option th:value="0" selected>-- Choisir Genre --</option>
+ <option th:each="c : ${genres}" th:value="${c.idGenre}" th:text="${c.nomGenre}"></option>
+ </select>
+ 
+                    </div>
+       
+                </form>
+<table class="table table-striped">
+<tr>
+<th>ID</th><th>Nom TvShow</th><th>Saison</th><th>Genre</th>
+<tr th:each="p:${tvshows}">
+<td th:text="${p.idTvShow}"></td>
+<td th:text="${p.nomTvShow}"></td>
+<td th:text="${p.saisonTvShow}"></td>
+  <td   th:if= "${!#strings.isEmpty(p.genre)}"   th:text="${p.genre.nomGenre}"></td>  
+  <td   th:if= "${#strings.isEmpty(p.genre)}"     th:text="${'Pas de Catégorie'}"></td>
+<td ><a class="btn btn-danger"
+onclick="return confirm('Etes-vous sûr ?')"
+th:href="@{supprimerTvShow(id=${p.idTvShow},
+page=${currentPage},size=${size})}">Supprimer</a>
+</td>
+<td ><a class="btn btn-success"
+th:href="@{modifierTvShow(id=${p.idTvShow})}">Editer</a></td>
+</tr>
+</table>
+<ul class="nav nav-pills">
+<li th:each="page,status:${pages}">
+<a th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+th:href="@{ ListeTvShows(page=${status.index}, size=${size} ) }"
+th:text="${status.index }"></a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

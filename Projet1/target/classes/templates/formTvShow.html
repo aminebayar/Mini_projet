@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="template">
+<link rel="stylesheet" type="text/css"
+href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Ajout des TvShows</title>
+</head>
+<body>
+<div layout:fragment="Mycontent">
+<div class="container mt-5">
+<div class="card">
+<div class="card-header"> Ajout des TvShows </div>
+<div class="card-body">
+<form th:action="@{saveTvShow}" method="post">
+<div class="form-group">
+<label class="control-label">Nom TvShow :</label>
+<input type="text" name="nomTvShow" class="form-control"
+th:value="${tvshow.nomTvShow}" />
+<span th:errors= ${tvshow.nomTvShow} class="text-danger"> </span>
+</div>
+<div class="form-group">
+<label class="control-label">Saisons:</label>
+<input type="text" name="saisonTvShow" class="form-control"
+th:value="${tvshow.saisonTvShow}" />
+<span th:errors=${tvshow.saisonTvShow} class="text-danger"> </span>
+</div>
+<div class="form-group">
+<label class="control-label">date création :</label>
+<input type="date" name="dateCreation" class="form-control"
+th:value="${tvshow.dateCreation}"/>
+<span th:errors=${tvshow.dateCreation} class="text-danger"> </span>
+</div>
+<div th:if="${mode!='edit'}">
+<div class="form-group"> 
+<label class="control-label">Genre :</label>
+ <select name="genre" class="form-control" required>
+ <option th:each="c : ${genres}" th:value="${c.idGenre}" th:text="${c.nomGenre}"></option>
+ </select>
+</div>
+</div>
+<div th:if="${mode=='edit'}">
+<div class="form-group"> 
+<label class="control-label">Genre :</label>
+ <select name="genre" class="form-control" required>
+  <option th:value="${tvshow.genre.idGenre}" th:text="${tvshow.genre.nomGenre}" selected></option>
+ <option th:each="c : ${genres}" th:value="${c.idGenre}" th:text="${c.nomGenre}"></option>
+ </select>
+</div>
+</div>
+   
+ <a th:href="@{ListeTvShows}" ><button type="button" class="btn btn-secondary">Annuler</button></a>
+ <button type="submit" class="btn btn-primary">Valider</button></div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
